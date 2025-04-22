@@ -16,18 +16,13 @@ contract DeployRaffle is Script {
         if (config.subscriptionID == 0) {
             // Create Subscription ID
             CreateSubscription createSubscription = new CreateSubscription();
-            (config.subscriptionID, config.vrfCoordinator) = createSubscription
-                .createSubscription(config.vrfCoordinator, config.account);
+            (config.subscriptionID, config.vrfCoordinator) =
+                createSubscription.createSubscription(config.vrfCoordinator, config.account);
 
             // Fund it
 
             FundSubscription fundSubscription = new FundSubscription();
-            fundSubscription.fundSubscription(
-                config.vrfCoordinator,
-                config.subscriptionID,
-                config.link,
-                config.account
-            );
+            fundSubscription.fundSubscription(config.vrfCoordinator, config.subscriptionID, config.link, config.account);
         }
 
         vm.startBroadcast(config.account);
@@ -44,12 +39,7 @@ contract DeployRaffle is Script {
         vm.stopBroadcast();
 
         AddConsumer addConsumer = new AddConsumer();
-        addConsumer.addConsumer(
-            address(raffle),
-            config.vrfCoordinator,
-            config.subscriptionID,
-            config.account
-        );
+        addConsumer.addConsumer(address(raffle), config.vrfCoordinator, config.subscriptionID, config.account);
 
         return (raffle, helperConfig);
     }
